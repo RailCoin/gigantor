@@ -29,7 +29,8 @@ RUN \
         libxslt-dev \
         runit \
         wget \
-        pandoc
+        pandoc \
+        libyajl-dev 
 
 # copy in everything from repo
 COPY . .
