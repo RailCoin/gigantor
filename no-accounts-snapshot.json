@@ -1,0 +1,12 @@
+{
+  "metadata": {"snapshot:semver": "0.2"},
+  "dynamic_global_properties": {
+    "total_vesting_fund_steem": {
+      "amount": "194048993790",
+      "nai": "@@000000021",
+      "precision": 3
+    }
+  },
+  "accounts": [],
+  "witnesses": []
+}

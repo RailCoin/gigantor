@@ -30,20 +30,13 @@ RUN \
         runit \
         wget \
         pandoc \
-        libyajl-dev 
+        libyajl-dev \
+        virtualenv
 
 # copy in everything from repo
 COPY . .
 
 RUN chmod +x /app/snapshotgen.sh
-
-# Python 3.6
-RUN \
-    wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz && \
-    tar xvf Python-3.7.0.tar.xz && \
-    cd Python-3.7.0/ && \
-    ./configure && \
-    make altinstall
 
 # entrypoint
 CMD /app/snapshotgen.sh
