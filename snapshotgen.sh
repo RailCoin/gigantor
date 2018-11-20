@@ -13,9 +13,9 @@ rm -rf txgen-latest.actions
 echo "snapshot-generator: installing tinman"
 
 git clone https://github.com/steemit/tinman
+cd tinman
 virtualenv -p $(which python3) ~/ve/tinman
 source ~/ve/tinman/bin/activate
-cd tinman
 pip install pipenv && pipenv install
 pip install .
 
@@ -26,18 +26,15 @@ cd $HOME
 
 timestamp=$(date +%s)
 
-# FIXME - tinman does not yet support zero accounts because zero total_vests
-# is not handled properly.  See: https://github.com/steemit/tinman/issues/180
+echo "snapshot-generator: generating a new no-accounts-txgen-latest.actions from no-accounts-snapshot (without backfill)"
+time tinman txgen -c $APP_ROOT/no-accounts-txgen.conf -o no-accounts-txgen-latest.actions
 
-# echo "snapshot-generator: generating a new no-accounts-txgen-latest.actions from no-accounts-snapshot (without backfill)"
-# time tinman txgen -c $APP_ROOT/no-accounts-txgen.conf -o no-accounts-txgen-latest.actions
-#
-#echo "snapshot-generator: generated no-accounts-txgen-latest.actions: $(head -1 no-accounts-txgen-latest.actions)"
-#
-#echo "snapshot-generator: copying no-accounts-txgen-$timestamp.json to s3://$S3_BUCKET"
-#time aws s3 cp no-accounts-txgen-latest.actions s3://$S3_BUCKET/no-accounts-txgen-$timestamp.actions
-#echo "snapshot-generator: copying to no-accounts-txgen-latest.actions"
-#time aws s3 cp s3://$S3_BUCKET/no-accounts-txgen-$timestamp.actions s3://$S3_BUCKET/no-accounts-txgen-latest.actions
+echo "snapshot-generator: generated no-accounts-txgen-latest.actions: $(head -1 no-accounts-txgen-latest.actions)"
+
+echo "snapshot-generator: copying no-accounts-txgen-$timestamp.json to s3://$S3_BUCKET"
+time aws s3 cp no-accounts-txgen-latest.actions s3://$S3_BUCKET/no-accounts-txgen-$timestamp.actions
+echo "snapshot-generator: copying to no-accounts-txgen-latest.actions"
+time aws s3 cp s3://$S3_BUCKET/no-accounts-txgen-$timestamp.actions s3://$S3_BUCKET/no-accounts-txgen-latest.actions
 
 echo "snapshot-generator: generating a new $APP_ROOT/snapshot.json file"
 time tinman snapshot -s https://api.steemit.com -o $APP_ROOT/snapshot.json
